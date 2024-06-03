@@ -1,0 +1,13 @@
+directories:
+  temporary_storage: "/Users/temp/"
+
+style:
+  font: "CMU Serif Italic"
+  text_alignment: "CENTER"
+  background_color: "#000000"
+camera_resolutions:
+  default_resolution: "4k"
+window_position: UR
+window_monitor: 0
+full_screen: False
+embed_exception_mode: "Minimal"
