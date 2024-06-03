@@ -1,5 +1,5 @@
-directories:
-  temporary_storage: "/Users/temp/"
+#directories:
+#  temporary_storage: "/Users/temp/"
 
 style:
   font: "CMU Serif Italic"
