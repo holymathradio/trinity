@@ -5,7 +5,8 @@ Welcome to the Trinity Project! This project uses ManimGL 1.6.8 to create mathem
 ## Dependencies
 
 - Python (version 3.6 or higher)
-- ManimGL (version 1.6.8)
+- ManimGL (version 1.6.1)
+- Numpy (version 1.24)
 
 ## Installation
 
@@ -23,7 +24,7 @@ source venv/bin/activate   # On Windows, use `venv\Scripts\activate`
 ```
 Install manimgl:
 ```bash
-pip install manimgl==1.6.1
+pip install manimgl
 pip install setuptools
 ```
 
