@@ -1,6 +1,7 @@
 #directories:
 #  temporary_storage: "/Users/temp/"
-
+#tex:
+#  executable: "xelatex -no-pdf"
 style:
   font: "CMU Serif Italic"
   text_alignment: "CENTER"
