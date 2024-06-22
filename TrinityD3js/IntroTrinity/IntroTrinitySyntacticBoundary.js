@@ -2,7 +2,14 @@ console.log("IntroTrinitySyntacticBoundary.js loaded");
 
 window.IntroTrinitySyntacticBoundary = function(svg, callback, cancelCallback, getIsCanceled, setIsCanceled) {
     console.log("IntroTrinitySyntacticBoundary function called");
-setIsCanceled(false)
+    // Default implementations
+    const defaultSetIsCanceled = () => false;
+    const defaultGetIsCanceled = () => false;
+
+    // Use provided functions or fall back to defaults
+    setIsCanceled = setIsCanceled || defaultSetIsCanceled;
+    getIsCanceled = getIsCanceled || defaultGetIsCanceled;
+
     d3.select("#svg-container svg").selectAll("*").remove();
     const width = +svg.attr("width");
     const height = +svg.attr("height");
