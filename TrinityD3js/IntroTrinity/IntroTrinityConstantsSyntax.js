@@ -1,7 +1,10 @@
 console.log("IntroTrinityConstantsSyntax.js loaded");
 
-window.IntroTrinityConstantsSyntax = function(svg) {
+window.IntroTrinityConstantsSyntax = function(svg, callback, cancelCallback, getIsCanceled, setIsCanceled) {
     console.log("IntroTrinityConstantsSyntax function called");
+
+setTimeout(() => setIsCanceled(false), 10);
+
     const width = +svg.attr("width");
     const height = +svg.attr("height");
     const minDimension = Math.min(width, height);
@@ -12,7 +15,6 @@ window.IntroTrinityConstantsSyntax = function(svg) {
     const fontSizeInfinity = fontSizeRotating * 1.2; // 1.2 times bigger for infinity
     const initialRotation = Math.PI / 6 + Math.PI;  // Initial rotation by 1/6 of a radian
 
-    // Updated symbols array
     const symbols = ["0", "1", "∞", "<", "×", "+"];
 
     const circle = svg.append("circle")
@@ -50,13 +52,41 @@ window.IntroTrinityConstantsSyntax = function(svg) {
         updateSymbolPosition(this, i);
     });
 
-    // Reverse the selection order for +, ×, <
     const delayedSymbols = symbolsSelection.filter((d) => ["+", "×", "<"].includes(d)).nodes().reverse();
 
-    // Apply transitions with delay in reversed order
-    d3.selectAll(delayedSymbols)
-        .transition()
-        .delay((d, i) => (i + 1) * 500)  // Delay of 500ms for each subsequent symbol
-        .duration(500)
-        .style("opacity", 1);
+
+    const startTransition = () => {
+        delayedSymbols.forEach((symbol, i) => {
+            const transition = d3.select(symbol).transition()
+                .delay((i + 1) * 500)  // Delay of 500ms for each subsequent symbol
+                .duration(500)
+                .style("opacity", 1);
+        });
+    };
+
+    transition = setTimeout(startTransition, 100); // 100ms delay
+
+    // Call to next animation
+const timeoutId = setTimeout(() => {
+
+                    if (callback && !getIsCanceled()) {
+                        //console.log("calling")
+
+                        callback();
+                    } 
+                }, 2000);
+
+
+// Cancel the timeout in advance 
+const checkCancelLoop = setInterval(() => {
+                if (getIsCanceled && getIsCanceled()) {
+                    clearTimeout(timeoutId);
+                    clearTimeout(transition)
+                    clearInterval(checkCancelLoop);
+
+                }
+
+            }, 100);
+
+   
 };

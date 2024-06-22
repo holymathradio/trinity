@@ -1,7 +1,9 @@
 console.log("IntroTrinitySyntacticBoundary.js loaded");
 
-window.IntroTrinitySyntacticBoundary = function(svg) {
+window.IntroTrinitySyntacticBoundary = function(svg, callback, cancelCallback, getIsCanceled, setIsCanceled) {
     console.log("IntroTrinitySyntacticBoundary function called");
+setIsCanceled(false)
+    d3.select("#svg-container svg").selectAll("*").remove();
     const width = +svg.attr("width");
     const height = +svg.attr("height");
     const minDimension = Math.min(width, height);
@@ -30,7 +32,7 @@ window.IntroTrinitySyntacticBoundary = function(svg) {
 
         const fontSize = symbols[index] === "∞" ? fontSizeRotating * scaleInfinity * scale : fontSizeRotating * scale;
 
-        console.log(`Updating symbol ${index} to scale ${scale}`);
+        //console.log(`Updating symbol ${index} to scale ${scale}`);
         d3.select(symbol)
             .attr("x", x)
             .attr("y", y)
@@ -50,17 +52,29 @@ window.IntroTrinitySyntacticBoundary = function(svg) {
         updateSymbolPosition(this, i);
     });
 
-    let timer; // Declare timer variable here
+    let timer;
 
-    const animateSymbols = () => {
+
+// despite efforts, this loop cannot read properly cancel because timer keeps a local copy of sort
+    let animateSymbols = () => {
         let angleOffset = 0;
         let scale = 1;
         const minScale = 0.1;
 
+
+
+
         timer = d3.timer(() => {
+            if (getIsCanceled()) {
+                //console.log("logging inside timer",getIsCanceled());
+                timer.stop();
+                setIsCanceled(false)
+                return ;
+            }
             angleOffset += 0.01;
             scale = Math.max(minScale, scale - 0.0015);  // Gradually reduce the scale
 
+            //console.log("Updating symbolCANCELCALLBACK");
             symbolsSelection.each(function (d, i) {
                 updateSymbolPosition(this, i, angleOffset, scale);
             });
@@ -74,7 +88,8 @@ window.IntroTrinitySyntacticBoundary = function(svg) {
 
                 // Remove the symbols
                 symbolsSelection.remove();
-
+                //console.log("logging",getIsCanceled());
+                 if ( !getIsCanceled()) {
                 // When symbols are very small, display a curved "x" at the center
                 svg.append("text")
                     .attr("x", centerX)
@@ -85,18 +100,28 @@ window.IntroTrinitySyntacticBoundary = function(svg) {
                     .attr("text-anchor", "middle")
                     .attr("dominant-baseline", "central")
                     .text("𝑥");  // Use a curved "x" symbol
+                }
+
+                if (callback && !getIsCanceled()) {
+                    callback();
+
+                } else {              
+            }
             }
         });
     };
-
     // Delay the animation start by 1 second
-    setTimeout(animateSymbols, 1000);
+const timeoutId = setTimeout(animateSymbols, 1000);
 
-    // Define a reset function to stop animation and reset variables
-    window.resetIntroTrinitySyntacticBoundary = () => {
-        if (timer) {
-            timer.stop();
-        }
-        svg.selectAll("*").remove(); // Clear SVG elements
-    };
+
+// Cancel the timeout in advance because the timer fails to read getIsCancled
+const checkCancelLoop = setInterval(() => {
+                if (getIsCanceled()) {
+                    clearTimeout(timeoutId);
+                    clearInterval(checkCancelLoop);
+                }
+            }, 100);
+
+
+
 };
