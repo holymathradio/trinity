@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rotating Symbols around Circle</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000;
+            color: #fff;
+        }
+        .symbol {
+            font-size: 64px;
+            text-anchor: middle;
+            dominant-baseline: central;
+        }
+        button {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<svg width="800" height="800"></svg>
+<button id="next-scene">Next Scene</button>
+<script>
+    const loadScript = (url) => {
+        return new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = url;
+            script.onload = () => {
+                console.log(`${url} loaded`);
+                resolve();
+            };
+            script.onerror = () => {
+                reject(new Error(`Failed to load script: ${url}`));
+            };
+            document.head.appendChild(script);
+        });
+    };
+    // d3js_scene/AdditionCommutativity/
+    let currentScene = 0;
+    const scenes = [
+        'AdditionAssociativityIntro.js', 
+        'AdditionAssociativityRight.js', 
+        'AdditionAssociativityLeft.js',
+        'AdditionAssociativityFinalScene.js', 
+    ];
+
+    
+    const svg = d3.select("svg");
+
+    const clearSVG = () => {
+        svg.selectAll("*").remove();
+    };
+
+    const loadNextScene = () => {
+        if (currentScene < scenes.length) {
+            const url = scenes[currentScene];
+            console.log(url);
+            loadScript(url)
+                .then(() => {
+                    clearSVG();
+                    setTimeout(() => { // Adding a slight delay to ensure the function is registered
+                        switch (currentScene) {
+                            case 0:
+                                console.log("Calling IntroTrinityConstants");
+                                window.AdditionAssociativityIntro(svg);
+                                break;
+                            case 1:
+                                console.log("Calling IntroTrinityConstantsSyntax");
+                                window.AdditionAssociativityRight(svg);
+                                break;
+                            case 2:
+                                console.log("Calling Intro3GeoLabelCurvedArrows");
+                                window.AdditionAssociativityLeft(svg);
+                                break;
+                            case 3:
+                                window.AdditionAssociativityFinalScene(svg);
+                                break;
+                        }
+                        currentScene++;
+                    }, 100); // 100ms delay
+                    if (currentScene === 3) {
+                        document.getElementById('next-scene').remove();
+                    }
+                })
+                .catch((error) => console.error(`Error loading script: ${error}`));
+        }
+    };
+
+    document.getElementById('next-scene').addEventListener('click', loadNextScene);
+
+    // Load the first scene initially
+    loadNextScene();
+</script>
+</body
+
+
+
+
+
