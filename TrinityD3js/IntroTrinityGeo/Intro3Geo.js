@@ -20,18 +20,16 @@ if (window.innerWidth < 600) {
         svgHeight =  400 ;
     }
 // Update the SVG dimensions and viewBox
-d3.select("#svg-container svg")
-  .attr("width", maxWidth)
+svg.attr("width", maxWidth)
   .attr("height", svgHeight) // Set this based on your aspect ratio needs
   .attr("viewBox", `0 0 ${maxWidth} ${svgHeight}`);
-        d3.select("#svg-container svg").selectAll("*").remove();
+        svg.selectAll("*").remove();
     } else {
         console.error('No elements found with class "content-block".');
-        d3.select("#svg-container svg")
-  .attr("width", 800)
+        svg.attr("width", 800)
   .attr("height", 500) // Set this based on your aspect ratio needs
   .attr("viewBox", `0 0 800 500`);
-        d3.select("#svg-container svg").selectAll("*").remove();
+        svg.selectAll("*").remove();
     }
 
 

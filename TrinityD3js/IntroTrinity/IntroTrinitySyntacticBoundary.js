@@ -10,7 +10,10 @@ window.IntroTrinitySyntacticBoundary = function(svg, callback, cancelCallback, g
     setIsCanceled = setIsCanceled || defaultSetIsCanceled;
     getIsCanceled = getIsCanceled || defaultGetIsCanceled;
 
-    d3.select("#svg-container svg").selectAll("*").remove();
+    setTimeout(() => setIsCanceled(false), 10); //setting back to false at start of animation
+
+    //svg.selectAll("*").remove();
+    svg.selectAll("*").remove();
     const width = +svg.attr("width");
     const height = +svg.attr("height");
     const minDimension = Math.min(width, height);
@@ -73,9 +76,10 @@ window.IntroTrinitySyntacticBoundary = function(svg, callback, cancelCallback, g
 
         timer = d3.timer(() => {
             if (getIsCanceled()) {
-                //console.log("logging inside timer",getIsCanceled());
+                console.log("logging inside timer",getIsCanceled());
                 timer.stop();
                 setIsCanceled(false)
+                console.log("logging inside timer",getIsCanceled());
                 return ;
             }
             angleOffset += 0.01;

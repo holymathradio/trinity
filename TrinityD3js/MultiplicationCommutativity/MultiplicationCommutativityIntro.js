@@ -322,7 +322,7 @@ let newPoints = transformPoints(points,axes);
 
 
     svg.append("defs").append("marker")
-        .attr("id", "arrow")
+        .attr("id", "arrow-commutativity-intro")
         .attr("viewBox", "0 0 20 20")
         .attr("refX", "10")
         .attr("refY", "10")
@@ -347,7 +347,7 @@ let newPoints = transformPoints(points,axes);
         .attr("fill", "none")
         .attr("stroke", "yellow")
         .attr("stroke-width", 2)
-        .attr("marker-end", "url(#arrow)")
+        .attr("marker-end", "url(#arrow-commutativity-intro)")
         .attr("d", curvePath.toString());
 
     const timex = svg.select(".timex");

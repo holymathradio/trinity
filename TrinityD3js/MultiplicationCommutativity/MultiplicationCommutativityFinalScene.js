@@ -256,20 +256,20 @@ function calculateLabelPosition(startDrawPoint, endDrawPoint, r) {
 
 
  const curvePath = d3.path();
-    curvePath.arc(adjustedControlX, adjustedControlY, radius, angle + Math.PI + Math.PI / 3, angle + Math.PI + Math.PI / 3 + Math.PI / 3.3, false);
+    curvePath.arc(adjustedControlX, adjustedControlY, radius, angle + Math.PI + Math.PI / 3, angle + Math.PI + Math.PI / 3 + Math.PI / 3.2, false); // 3.2 does not show the full path which would be Pi
 
     svg.append("path")
         .attr("class", "timex")
         .attr("fill", "none")
         .attr("stroke", "yellow")
         .attr("stroke-width", 2)
-        .attr("marker-end", "url(#arrow)")
+        .attr("marker-end", "url(#arrow-commutativity-final)")
         .attr("d", curvePath.toString());
 
 
 
     svg.append("defs").append("marker")
-        .attr("id", "arrow")
+        .attr("id", "arrow-commutativity-final")
         .attr("viewBox", "0 0 20 20")
         .attr("refX", "10")
         .attr("refY", "10")

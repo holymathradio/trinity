@@ -11,7 +11,7 @@ window.IntroTrinityConstants = function(svg, callback, cancelCallback, getIsCanc
     svg.attr("width", 400)
        .attr("height", 400)
        .attr("viewBox", "0 0 400 400");
-        d3.select("#svg-container svg").selectAll("*").remove();
+    svg.selectAll("*").remove();
            // Log the dimensions to debug
     //console.log("SVG width attribute:", svg.attr("width"));
     //console.log("SVG height attribute:", svg.attr("height"));

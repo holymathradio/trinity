@@ -3,8 +3,7 @@ console.log("Intro3GeoLabelFinalScene.js loaded");
 window.Intro3GeoLabelFinalScene = function(svg, callback, cancelCallback, getIsCanceled, setIsCanceled) {
     console.log("Intro3GeoLabelFinalScene function called");
     //setIsCanceled(false)
-    d3.select("#svg-container svg").selectAll("*").remove();
-    //const svg = d3.select("svg");
+    svg.selectAll("*").remove();
 
 function getPerpendicularLineEquation(x1, y1, x2, y2, x) {
     const midX = (x1 + x2) / 2;
@@ -172,17 +171,17 @@ svg.append("text").attr("class", "sign-holy-spirit");
     curvePath.arc(adjustedControlX, adjustedControlY, radius, angle + Math.PI + Math.PI / 3, angle + Math.PI + Math.PI / 3 + Math.PI / 3.3, false);
 
     svg.append("path")
-        .attr("class", "timex")
+        .attr("class", "timex-3geo-final")
         .attr("fill", "none")
         .attr("stroke", "yellow")
         .attr("stroke-width", 2)
-        .attr("marker-end", "url(#arrow)")
+        .attr("marker-end", "url(#arrow-3geo-final)")
         .attr("d", curvePath.toString());
 
 
 
     svg.append("defs").append("marker")
-        .attr("id", "arrow")
+        .attr("id", "arrow-3geo-final")
         .attr("viewBox", "0 0 20 20")
         .attr("refX", "10")
         .attr("refY", "10")

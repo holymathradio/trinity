@@ -25,7 +25,7 @@ setTimeout(() => setIsCanceled(false), 10);
         .attr("stroke", "white")
         .attr("stroke-opacity", 0);
 
-    const updateSymbolPosition = (symbol, index, angleOffset = 0) => {
+    const updateSymbolPosition = (symbol, index, angleOffset = 0) => { 
         const angle = initialRotation + (index * Math.PI / 3) + angleOffset;
         const x = centerX + radius * Math.cos(angle);
         const y = centerY + radius * Math.sin(angle);

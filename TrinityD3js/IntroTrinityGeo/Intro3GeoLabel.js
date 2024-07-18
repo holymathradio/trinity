@@ -3,7 +3,7 @@ console.log("Intro3GeoLabel.js loaded");
 window.Intro3GeoLabel = function(svg, callback, cancelCallback, getIsCanceled, setIsCanceled) {
     console.log("Intro3GeoLabel function called");
     setTimeout(() => setIsCanceled(false), 10);
-    d3.select("#svg-container svg").selectAll("*").remove();
+    svg.selectAll("*").remove();
 
 
 svg.append("circle").attr("class", "father-dot");

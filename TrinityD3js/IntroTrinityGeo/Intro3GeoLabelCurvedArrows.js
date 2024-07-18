@@ -3,7 +3,7 @@ console.log("Intro3GeoLabelCurvedArrows.js loaded");
 window.Intro3GeoLabelCurvedArrows = function(svg, callback, cancelCallback, getIsCanceled, setIsCanceled) {
     console.log("Intro3GeoLabelCurvedArrows function called");
 setTimeout(() => setIsCanceled(false), 10);
-    d3.select("#svg-container svg").selectAll("*").remove();
+    svg.selectAll("*").remove();
     function getPerpendicularLineEquation(x1, y1, x2, y2, x) {
         const midX = (x1 + x2) / 2;
         const midY = (y1 + y2) / 2;

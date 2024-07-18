@@ -1,8 +1,6 @@
-console.log("MultiplicationCommutativityCommutedProduct loaded");
-
-window.MultiplicationCommutativityCommutedProduct= function(svg, callback, cancelCallback, getIsCanceled, setIsCanceled) {
-       console.log("MultiplicationCommutativityCommutedProduct function called");
-
+console.log("MultiplicationDistributivityIntro.js loaded");
+window.MultiplicationDistributivityIntro = function(svg, callback, cancelCallback, getIsCanceled, setIsCanceled) {
+    console.log("MultiplicationDistributivityIntro function called");
     svg.selectAll("*").remove();
 
         function getPerpendicularLineEquation(x1, y1, x2, y2, x) {
@@ -63,11 +61,9 @@ function calculateMultiplicationCoordinatePoints(numbers) {
 
     // Get the width of the animation container
 var containers = document.getElementsByClassName('content-block');
-let ratio_mobile = 1
-
+let ratio_mobile = 1;
 if (window.innerWidth < 600) {
-
-        ratio_mobile = 0.8 ;
+        ratio_mobile =0.8 ;
     }
 
 
@@ -80,8 +76,11 @@ var maxContainerWidth = parseInt(style.width);
 var maxWidth = Math.min(800, maxContainerWidth);
 let svgHeight =  500;
 
+
+
 if (window.innerWidth < 600) {
         svgHeight =  400 ;
+
     }
 // Update the SVG dimensions and viewBox
 svg.attr("width", maxWidth)
@@ -98,21 +97,17 @@ svg.attr("width", maxWidth)
 
     const fontSize = "36px"; // Set the font size for all labels
 
-    const delayShiftLabel = 1500 ;
-    const durationShiftLabel = 1000 ;
 
-    const delayTime = delayShiftLabel + durationShiftLabel + 1500; // delay for ex and its brace
+
+    const delayTime = 1000; // delay for ex and its brace
     const durationTime = 1000; // duration for ex and its brace
 
-    const delayLabel = delayTime + durationTime ;
+    const delayLabel = delayTime + durationTime + 2000 ;
     const durationLabel = 1000;
 
 
-    const delayFadeOutProductSplit = delayLabel + durationLabel + 4000; // delay for ex and its brace
-    const durationFadeOutProductSplit = 1000; // duration for ex and its brace
 
-
-    const totalDuration = delayFadeOutProductSplit + durationFadeOutProductSplit + 500;
+    const totalDuration = delayLabel + durationLabel + 500;
 
     const svgWidth = +svg.attr("width");
     const svgHeight = +svg.attr("height");
@@ -275,6 +270,7 @@ function calculateLabelPosition(startDrawPoint, endDrawPoint, r) {
     const initialControlY = midY + radius * Math.cos(angle) - 23;
     const targetPoint = axes.c2p(1, 1);
 
+    const targetMiddlePoint = axes.c2p(2, 0.5);
 
     const { adjustedControlX, adjustedControlY } = getControlPointAdjustment(initialControlX, initialControlY, radius, angle + Math.PI + Math.PI / 3, targetPoint);
 
@@ -286,6 +282,7 @@ const numbers = [1.8, 4/1.8];
 
 //Coordinate of points spread in 1/N xaxis including the start point
 const points = calculateMultiplicationCoordinatePoints(numbers);
+//console.log(points);
 
 
 // Get true coordinates through the axes
@@ -293,211 +290,19 @@ let newPoints = transformPoints(points,axes);
 
 
 
-
-// Multiplication list
-const numbersRightLeft = [ 4/1.8, 1.8];
-
-//Coordinate of points spread in 1/N xaxis including the start point
-const pointsRightLeft = calculateMultiplicationCoordinatePoints(numbersRightLeft);
-
-// Get true coordinates through the axes
-let newPointsRightLeft = transformPoints(pointsRightLeft,axes);
-
-
-
-
-const arcParamsRight = calculateArcParameters(newPointsRightLeft[1], newPointsRightLeft[2]);
-
-console.log("Arc Parameters:", arcParamsRight);
-
-// Using curvePath.arc() to draw the arc
-const curveDrawPathRight = d3.path();
-curveDrawPathRight.moveTo(newPointsRightLeft[1][0], newPointsRightLeft[1][1]);
-curveDrawPathRight.arc(
-    arcParamsRight.adjustedControlX,
-    arcParamsRight.adjustedControlY,
-    arcParamsRight.radius,
-    arcParamsRight.startAngle,
-    arcParamsRight.endAngle,
-    arcParamsRight.counterclockwise
-);
-
-// Define the arrow marker
-svg.append("defs").append("marker")
-    .attr("id", "arrow-right")
-    .attr("viewBox", "0 0 20 20")
-    .attr("refX", "10")
-    .attr("refY", "10")
-    .attr("markerWidth", markerSize*0.8)
-    .attr("markerHeight", markerSize*0.8 )
-    .attr("orient", "auto-start-reverse")
-    .append("path")
-    .attr("d", "M 0 0 L 20 10 L 0 20 z")
-    .attr("fill", "yellow")
-            .style("opacity", 1) //fadeout
-        .transition()
-        .delay(delayFadeOutProductSplit)
-        .duration(durationFadeOutProductSplit)
-        .style("opacity", 0);
-
-
-
-// Append the path to the SVG
-svg.append("path")
-    .attr("d", curveDrawPathRight.toString())
-    .attr("fill", "none")
-    .attr("stroke", "yellow")
-    .attr("stroke-width", 2)
-    .attr("marker-end", "url(#arrow-right)")
-                .style("opacity", 1) //fadeout
-        .transition()
-        .delay(delayFadeOutProductSplit)
-        .duration(durationFadeOutProductSplit)
-        .style("opacity", 0);
-
-
-// Calculate initial and final label positions for the left arc
-let r_right = -55*ratio_mobile;
-
-// Calculate initial and final label positions for the left arc
-const r_left = -40*ratio_mobile; // You can adjust this value as needed
-let r_left_shifted = r_left;
-
-
-    let r_ini_right = 0;
-    let r_ini_left = 10;
-
-
-
-const labelCommutedRightInitial = calculateLabelPosition(newPointsRightLeft[1], newPointsRightLeft[2], r_right);
-const labelCommutedRightFinal = calculateLabelPosition(newPointsRightLeft[1], newPointsRightLeft[2], r_ini_right);
-
-
-const labelCommutedLeftInitial = calculateLabelPosition(newPointsRightLeft[0], newPointsRightLeft[1], r_left_shifted);
-const labelCommutedLeftFinal = calculateLabelPosition(newPointsRightLeft[0], newPointsRightLeft[1], r_ini_left);
-
-
-
-
-    // Add the label to the SVG
-    svg.append("text")
-    .attr("class", "label-time-e-pi")
-        .attr("x", labelCommutedLeftInitial[0])
-        .attr("y", labelCommutedLeftInitial[1])
-        .attr("text-anchor", "middle")
-        .attr("dominant-baseline", "central")
-        .attr("font-size", fontSize)
-        .attr("fill", "grey")
-        .text("e'")
-        .transition() // Start the transition
-        .delay(delayShiftLabel) // Apply the delay
-        .duration(durationShiftLabel) // Set the duration
-        .attr("x", labelCommutedLeftFinal[0]) // Final x position
-        .attr("y", labelCommutedLeftFinal[1]) // Final y position
-        .style("opacity", 1)
-        .transition()
-        .delay(delayFadeOutProductSplit-delayShiftLabel-durationShiftLabel)
-        .duration(durationFadeOutProductSplit)
-        .style("opacity", 0);
-
-
-    // Add the label to the SVG
-    svg.append("text")
-    .attr("class", "label-time-e-pi")
-        .attr("x", labelCommutedRightInitial[0])
-        .attr("y", labelCommutedRightInitial[1])
-        .attr("text-anchor", "middle")
-        .attr("dominant-baseline", "central")
-        .attr("font-size", fontSize)
-        .attr("fill", "grey")
-        .text("e")
-            .transition() // Start the transition
-    .delay(delayShiftLabel) // Apply the delay
-    .duration(durationShiftLabel) // Set the duration
-    .attr("x", labelCommutedRightFinal[0]) // Final x position
-    .attr("y", labelCommutedRightFinal[1]) // Final y position
-        .style("opacity", 1)
-        .transition()
-        .delay(delayFadeOutProductSplit-delayShiftLabel-durationShiftLabel)
-        .duration(durationFadeOutProductSplit)
-        .style("opacity", 0);
-
-
-
-
-    svg.append("defs").append("marker")
-        .attr("id", "arrow")
-        .attr("viewBox", "0 0 20 20")
-        .attr("refX", "10")
-        .attr("refY", "10")
-        .attr("markerWidth", markerSize)
-        .attr("markerHeight", markerSize)
-        .attr("orient", "auto-start-reverse")
-        .append("path")
-        .attr("d", "M 0 0 L 20 10 L 0 20 z")
-        .attr("fill", "yellow")
+        /*
         .style("opacity", 0)
         .transition()
-        .delay(delayTime)
-        .duration(1000)
+        .delay(delayLabel)
+        .duration(durationLabel)
         .style("opacity", 1);
-
-
-        
-const arcParamsLeft = calculateArcParameters(newPointsRightLeft[0], newPointsRightLeft[1]);
-
-console.log("Arc Parameters:", arcParamsLeft);
-
-// Using curvePath.arc() to draw the arc
-const curveDrawPathLeft = d3.path();
-curveDrawPathLeft.moveTo(newPointsRightLeft[0][0], newPointsRightLeft[0][1]);
-curveDrawPathLeft.arc(
-    arcParamsLeft.adjustedControlX,
-    arcParamsLeft.adjustedControlY,
-    arcParamsLeft.radius,
-    arcParamsLeft.startAngle,
-    arcParamsLeft.endAngle,
-    arcParamsLeft.counterclockwise
-);
-
-// Define the arrow marker
-svg.append("defs").append("marker")
-    .attr("id", "arrow-left")
-    .attr("viewBox", "0 0 20 20")
-    .attr("refX", "10")
-    .attr("refY", "10")
-    .attr("markerWidth", markerSize*0.8)
-    .attr("markerHeight", markerSize*0.8)
-    .attr("orient", "auto-start-reverse")
-    .append("path")
-    .attr("d", "M 0 0 L 20 10 L 0 20 z")
-    .attr("fill", "yellow")
-                .style("opacity", 1) //fadeout
-        .transition()
-        .delay(delayFadeOutProductSplit)
-        .duration(durationFadeOutProductSplit)
-        .style("opacity", 0);
-
-
-// Append the path to the SVG
-svg.append("path")
-    .attr("d", curveDrawPathLeft.toString())
-    .attr("fill", "none")
-    .attr("stroke", "yellow")
-    .attr("stroke-width", 2)
-    .attr("marker-end", "url(#arrow-left)")
-                .style("opacity", 1) //fadeout
-        .transition()
-        .delay(delayFadeOutProductSplit)
-        .duration(durationFadeOutProductSplit)
-        .style("opacity", 0);
+        */
 
 
 
 
 
 
-// add product
     svg.append("defs").append("marker")
         .attr("id", "arrow")
         .attr("viewBox", "0 0 20 20")
@@ -529,7 +334,7 @@ svg.append("path")
 
     const timex = svg.select(".timex");
 
-    for (let x = 0; x <= Math.PI / 3.2; x += 0.01) {
+    for (let x = 0; x <= Math.PI / 3.141; x += 0.01) {
         setTimeout(() => {
             const newPath = d3.path();
             newPath.arc(adjustedControlX, adjustedControlY, radius, angle + Math.PI + Math.PI / 3, angle + Math.PI + Math.PI / 3 + x, false);
@@ -538,23 +343,59 @@ svg.append("path")
     }
 
 
+// Add this function after the existing functions
+function drawEquidistantRectanglesInstant(svg, axes, N) {
+    const rectWidth = 5;
+    const rectHeight = 20;
+
+    for (let i = 0; i <= N; i++) {
+        const x = i * (4 / N);
+        const [xPos, yPos] = axes.c2p(x, 0);
+        
+        svg.append("rect")
+            .attr("class", "equidistant-rect")
+            .attr("x", xPos)
+            .attr("y", yPos)
+            .attr("width", rectWidth)
+            .attr("height", rectHeight)
+            .attr("fill", "white")
+            .attr("transform", `translate(-${rectWidth/2}, -${rectHeight/2})`);
+    }
+}
 
 
-    svg.append("text")
-        .attr("class", "label-time-e-pi")
-        .attr("x", axes.c2p(3.4, 0.75)[0])
-        .attr("y", axes.c2p(3.4, 0.75)[1])
-        .attr("text-anchor", "middle")
-        .attr("font-size", fontSize)
-        .attr("fill", "grey")
-        .text("e' * e")
-        .style("opacity", 0)
-        .transition()
-        .delay(delayLabel)
-        .duration(durationLabel)
-        .style("opacity", 1)
-        ;
+function drawEquidistantRectangles(svg, axes, N) {
+    const rectWidth = 5;
+    const rectHeight = 20;
+    const fadeInDuration = 200; // Duration of fade-in animation in milliseconds
+    const delayBetweenRects = 100; // Delay between each rectangle appearance
 
+    for (let i = 0; i <= N; i++) {
+        const x = i * (4 / N);
+        const [xPos, yPos] = axes.c2p(x, 0);
+        
+        svg.append("rect")
+            .attr("class", "equidistant-rect")
+            .attr("x", xPos)
+            .attr("y", yPos)
+            .attr("width", rectWidth)
+            .attr("height", rectHeight)
+            .attr("fill", "white")
+            .attr("transform", `translate(-${rectWidth/2}, -${rectHeight/2})`)
+            .style("opacity", 0) // Start with opacity 0
+            .transition() // Start a transition
+            .delay(i * delayBetweenRects) // Delay based on index
+            .duration(fadeInDuration) // Duration of the fade-in
+            .style("opacity", 1); // Fade to full opacity
+    }
+}
+// In the main function, after creating the SVG and defining the axes, add:
+const N = 8; // You can adjust this value to change the number of rectangles
+
+// Reverse the transition after a delay
+const timeoutDrawRectanglesId = setTimeout(() => {
+    drawEquidistantRectangles(svg, axes, N);
+}, delayLabel); // 2000 milliseconds (2 seconds) delay before reversing
 
 
 
@@ -570,15 +411,14 @@ svg.append("path")
     // Add the rectangle
     const rectangle = svg.append("rect")
         .attr("class", "large-tick")
-        .attr("x", axes.c2p(4 + 0.01, -0.00)[0])
-        .attr("y", axes.c2p(4 + 0.01, -0.00)[1])
+        .attr("x", axes.c2p(4 , -0.00)[0])
+        .attr("y", axes.c2p(4, -0.00)[1])
         .attr("width", 5)
         .attr("height", 20)
         .attr("fill", "white")
-        .attr("transform", `translate(-5, -10)`);
+        .attr("transform", `translate(-2.5, -10)`);
 
     fatherDot.raise(); // Ensure father-dot stays on top
-
 
         // Delay the animation start by 1 second
 const timeoutId = setTimeout(() => {
@@ -595,8 +435,10 @@ const timeoutId = setTimeout(() => {
 const checkCancelLoop = setInterval(() => {
                 if (getIsCanceled && getIsCanceled()) {
                     clearTimeout(timeoutId);
+                    clearTimeout(timeoutDrawRectanglesId);
                     clearInterval(checkCancelLoop);
                 }
 
             }, 100);
+
 };
