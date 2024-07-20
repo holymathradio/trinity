@@ -538,7 +538,6 @@ const timeoutId = setTimeout(() => {
 const checkCancelLoop = setInterval(() => {
                 if (getIsCanceled && getIsCanceled()) {
                     clearTimeout(timeoutId);
-                    clearTimeout(timeoutDrawRectanglesId);
                     clearInterval(checkCancelLoop);
                 }
 

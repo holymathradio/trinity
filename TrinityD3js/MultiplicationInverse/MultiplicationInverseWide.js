@@ -64,8 +64,10 @@ function calculateMultiplicationCoordinatePoints(numbers) {
     // Get the width of the animation container
 var containers = document.getElementsByClassName('content-block');
 let ratio_mobile = 1;
+let arrowGapRight = 15;
 if (window.innerWidth < 600) {
         ratio_mobile =0.8 ;
+        arrowGapRight = 10;
     }
 
 
@@ -441,7 +443,7 @@ svg.append("defs").append("marker")
 
 // Append the initial path to the SVG
 const transitioningPathLeft = svg.append("path")
-    .attr("d", createArc(topPoint, axes.c2p(1,0 ),-Math.PI * 1.38,arrowGap = 15))
+    .attr("d", createArc(topPoint, axes.c2p(1,0 ),-Math.PI * 1.38,arrowGap = arrowGapRight))
     .attr("fill", "none")
     .attr("stroke", "yellow")
     .attr("stroke-width", 2)
@@ -464,7 +466,7 @@ const transitioningPathLeft = svg.append("path")
 
                 angle_right = -Math.PI * 1.38*(1+t*0.5)
 
-                return createArc(topPoint, axes.c2p(x_right,0 ),angle_right,arrowGap = 15);
+                return createArc(topPoint, axes.c2p(x_right,0 ),angle_right,arrowGap = arrowGapRight);
             };
         });
 
@@ -528,7 +530,6 @@ const timeoutId = setTimeout(() => {
 const checkCancelLoop = setInterval(() => {
                 if (getIsCanceled && getIsCanceled()) {
                     clearTimeout(timeoutId);
-                    clearTimeout(timeoutDrawRectanglesId);
                     clearInterval(checkCancelLoop);
                 }
 

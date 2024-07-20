@@ -64,8 +64,10 @@ function calculateMultiplicationCoordinatePoints(numbers) {
     // Get the width of the animation container
 var containers = document.getElementsByClassName('content-block');
 let ratio_mobile = 1;
+let arrowGapRight = 15;
 if (window.innerWidth < 600) {
         ratio_mobile =0.8 ;
+        arrowGapRight = 10;
     }
 
 
@@ -362,7 +364,7 @@ axes.c2p(1, 0);
 
     // Define the arrow marker
 svg.append("defs").append("marker")
-    .attr("id", "arrow-inverse-right")
+    .attr("id", "arrow-inverse-right-final")
     .attr("viewBox", "0 0 20 20")
     .attr("refX", "10")
     .attr("refY", "10")
@@ -376,18 +378,18 @@ svg.append("defs").append("marker")
     let angle_right = -Math.PI * 1.38;
 
 // Append the initial path to the SVG
-const transitioningPathRight = svg.append("path")
-    .attr("d", createArc(topPoint, axes.c2p(x_right,0 ),angle_right,arrowGap = 15)) //parameters from previous scene
+const transitioningPathRightFinal = svg.append("path")
+    .attr("d", createArc(topPoint, axes.c2p(2,0 ),angle_right,arrowGap = arrowGapRight)) //parameters from previous scene
     .attr("fill", "none")
     .attr("stroke", "yellow")
     .attr("stroke-width", 2)
-    .attr("marker-end", "url(#arrow-inverse-right)")
+    .attr("marker-end", "url(#arrow-inverse-right-final)")
         .style("opacity", 1); // Set initial opacity to 1
 
 
     // Define the arrow marker
 svg.append("defs").append("marker")
-    .attr("id", "arrow-inverse-left")
+    .attr("id", "arrow-inverse-left-final")
     .attr("viewBox", "0 0 20 20")
     .attr("refX", "10")
     .attr("refY", "10")
@@ -401,12 +403,12 @@ svg.append("defs").append("marker")
 
 
 // Append the initial path to the SVG
-const transitioningPathLeft = svg.append("path")
+const transitioningPathLeftFinal = svg.append("path")
     .attr("d", generateArcPath(calculateArcParameters(topPoint, axes.c2p(1/2,0), adjusting_angle=1.09), topPoint))
     .attr("fill", "none")
     .attr("stroke", "yellow")
     .attr("stroke-width", 2)
-    .attr("marker-end", "url(#arrow-inverse-left)")
+    .attr("marker-end", "url(#arrow-inverse-left-final)")
         .style("opacity", 1); // Set initial opacity to 1
 
         let duration = 2000 ;
@@ -455,8 +457,8 @@ createRectanglePair(svg, axes, 4, "pair4");
 createRectanglePair(svg, axes, 3, "pair3");
 createRectanglePair(svg, axes, 2, "pair2");
 
-    transitioningPathRight.raise();
-    transitioningPathLeft.raise();
+    transitioningPathRightFinal.raise();
+    transitioningPathLeftFinal.raise();
 
 
     setOpacityForPair(svg, "pair2", 1);
