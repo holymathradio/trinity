@@ -322,7 +322,7 @@ window.MultiplicationDistributivityDownWithTrace = function(svg, callback, cance
         }
     }
 
-    const N = 8;
+    const N = 2;
 
     drawEquidistantRectanglesInstant(svg, axes, N);
 

@@ -390,7 +390,7 @@ function drawEquidistantRectangles(svg, axes, N) {
     }
 }
 // In the main function, after creating the SVG and defining the axes, add:
-const N = 8; // You can adjust this value to change the number of rectangles
+const N = 2; // You can adjust this value to change the number of rectangles
 
 // Reverse the transition after a delay
 const timeoutDrawRectanglesId = setTimeout(() => {

@@ -328,7 +328,7 @@ window.MultiplicationDistributivityUpAndDown = function(svg, callback, cancelCal
         }
     }
 
-    const N = 8;
+    const N = 2;
 
     drawEquidistantRectanglesInstant(svg, axes, N);
 
