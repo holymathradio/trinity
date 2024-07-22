@@ -45,13 +45,15 @@ svg.attr("width", maxWidth)
 
     svg.append("line")
         .attr("class", "linej");
-
+/*
     svg.append("text")
         .attr("class", "sign-holy-spirit")
         .attr("font-size", "66")
         .attr("fill", "yellow")
         .style("opacity", 0)
         .text(">");
+*/
+
 
             svg.append("text")
         .attr("class", "transition")
@@ -72,6 +74,33 @@ svg.attr("width", maxWidth)
             height: height,
             c2p: (x, y) => [width / 2 + (x * width / 10), height / 2 - (y * height / 4)]
         };
+
+
+ function createArrow(svg, x, y, angle, size, color) {
+    // Convert angle from degrees to radians
+    const rad = angle * Math.PI / 180;
+    
+    // Calculate end points of the two lines
+    const x1 = x + size * Math.cos(rad + 7*Math.PI / 8);
+    const y1 = y + size * Math.sin(rad + 7*Math.PI / 8);
+    const x2 = x + size * Math.cos(rad - 7*Math.PI / 8);
+    const y2 = y + size * Math.sin(rad - 7*Math.PI / 8);
+    
+    // Create the arrow using a path element
+    return svg.append("path")
+        .attr("class", "sign-holy-spirit")
+       .attr("d", `M${x1},${y1} L${x},${y} L${x2},${y2}`)
+       .attr("stroke", color)
+       .attr("stroke-width", 5)
+       .attr("fill", "none")
+       .style("opacity",0);
+}
+
+// Get the coordinates where you want to place the arrow
+const [arrowX, arrowY] = axes.c2p(4.4, 0);
+
+// Create the arrow
+createArrow(svg, arrowX, arrowY, 0, 40, "yellow");
 
         // Create scales
         const xScale = d3.scaleLinear().domain([axes.xRange[0], axes.xRange[1]]).range([0, axes.width]);

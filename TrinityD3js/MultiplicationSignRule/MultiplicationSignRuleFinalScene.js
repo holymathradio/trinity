@@ -31,16 +31,17 @@ window.MultiplicationSignRuleFinalScene = function(svg, callback, cancelCallback
 
 
     let arrowGapRight = 15;
-  let ratio_mobile = 1 ;
-
+     let ratio_mobile = 1 ;
+  let size_holy_spirit_arrow = 30 ;
     if (window.innerWidth < 600) {
-
         shiftVectorInf = [-0.6, 0];
         zeroMobileShift = -0.05;
         espaceMobileShift = -8;
         arrowGapRight = 10;
         ratio_mobile = 0.7;
-        markerSize = 8*ratio_mobile;
+        markerSize = 8*ratio_mobile*ratio_mobile;
+                size_holy_spirit_arrow = 20;
+
     }
 
     const svgWidth = +svg.attr("width");
@@ -66,12 +67,14 @@ let constantLabelShift = 25*ratio_mobile ;
 
 
 const shiftOuterCircle = 30*ratio_mobile ;
-const shiftInnerCircle = 40*ratio_mobile ;
+const shiftInnerCircle = 20*ratio_mobile ;
 
 
 
 let radius = 20*ratio_mobile;
-let radius_zero = 15*ratio_mobile;
+let radius_zero = 15*ratio_mobile*ratio_mobile*ratio_mobile;
+
+
 
 const goldenRatio = (1 + Math.sqrt(5)) / 2*1;
 
@@ -161,7 +164,7 @@ function createArc(startPoint, endPoint, angleHeight, arrowGap = 0) {
     const [arrowX, arrowY] = axes.c2p(4, 0);
 
     // Create the arrow
-    createArrow(svg, arrowX, arrowY, 0, 40, "yellow");
+    createArrow(svg, arrowX, arrowY, 0, size_holy_spirit_arrow, "yellow");
 
     const xScale = d3.scaleLinear().domain([axes.xRange[0], axes.xRange[1]]).range([0, axes.width]);
     const yScale = d3.scaleLinear().domain([axes.yRange[0], axes.yRange[1]]).range([axes.height, 0]);
@@ -447,7 +450,7 @@ function drawCircularPath(svg, centerPoint, startPoint, angle, radius, color = "
 
     
     // Draw a small line segment at the end to ensure the marker is visible and correctly oriented
-    const tangentLength = 10; // Adjust this value if needed
+    const tangentLength = 1; // Adjust this value if needed
     const tangentEndX = endXProper - tangentLength * Math.sin(endAngle  -  Math.PI/2);
     const tangentEndY = endYProper + tangentLength * Math.cos(endAngle -  Math.PI/2);
     
@@ -456,7 +459,7 @@ function drawCircularPath(svg, centerPoint, startPoint, angle, radius, color = "
         .attr("y1", endYProper)
         .attr("x2", tangentEndX)
         .attr("y2", tangentEndY)
-        .attr("stroke", "blue")
+        .attr("stroke", "black")
         .attr("stroke-width", 5)
         .attr("marker-end", `url(#${markerId})`);
 
@@ -527,11 +530,11 @@ const centerPointMinusMinus= [disc_minus_left_position[0] - shiftOuterCircle, di
 drawCircularPath(svg, centerPointMinusMinus, disc_minus_left_position, angle, radius, "yellow", "arrow-minus-to-minus");
 
 
-const centerPointZeroZeroRight = [disc_zero_position[0] + shiftInnerCircle, disc_zero_position[1]];
+const centerPointZeroZeroRight = [disc_zero_position[0] + radius_zero + shiftInnerCircle, disc_zero_position[1]];
 drawCircularPath(svg, centerPointZeroZeroRight, disc_zero_position, angle, radius_zero, "yellow", "arrow-zero-zero-right");
 
 
-const centerPointZeroZeroLeft = [disc_zero_position[0] - shiftInnerCircle, disc_zero_position[1]];
+const centerPointZeroZeroLeft = [disc_zero_position[0] - radius_zero - shiftInnerCircle, disc_zero_position[1]];
 drawCircularPath(svg, centerPointZeroZeroLeft, disc_zero_position, angle, radius_zero, "white", "arrow-zero-zero-left");
 
 
