@@ -25,17 +25,19 @@ window.MultiplicationSigneRuleIntro = function(svg, callback, cancelCallback, ge
     let zeroMobileShift = 0;
     let espaceMobileShift = 0;
     let markerSize = 12;
-  let ratio_mobile = 1 ;
-
+    let arrowGapRight = 15;
+     let ratio_mobile = 1 ;
+  let size_holy_spirit_arrow = 30 ;
     if (window.innerWidth < 600) {
-        markerSize = 8;
         shiftVectorInf = [-0.6, 0];
         zeroMobileShift = -0.05;
         espaceMobileShift = -8;
         arrowGapRight = 10;
         ratio_mobile = 0.7;
-    }
+        markerSize = 8*ratio_mobile*ratio_mobile;
+                size_holy_spirit_arrow = 20;
 
+    }
     const svgWidth = +svg.attr("width");
     const svgHeight = +svg.attr("height");
     const width = svgWidth * 1;
@@ -161,11 +163,13 @@ function createArc(startPoint, endPoint, angleHeight, arrowGap = 0) {
 }
 
 
+    // create Holy spirit sign
+
     // Get the coordinates where you want to place the arrow
     const [arrowX, arrowY] = axes.c2p(4, 0);
 
     // Create the arrow
-    createArrow(svg, arrowX, arrowY, 0, 40, "yellow");
+    createArrow(svg, arrowX, arrowY, 0, size_holy_spirit_arrow, "yellow");
 
     const xScale = d3.scaleLinear().domain([axes.xRange[0], axes.xRange[1]]).range([0, axes.width]);
     const yScale = d3.scaleLinear().domain([axes.yRange[0], axes.yRange[1]]).range([axes.height, 0]);

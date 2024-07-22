@@ -43,16 +43,19 @@ window.MultiplicationSigneRuleArrows = function(svg, callback, cancelCallback, g
 
 
     let arrowGapRight = 15;
-   let ratio_mobile = 1 ;
-
+     let ratio_mobile = 1 ;
+  let size_holy_spirit_arrow = 30 ;
     if (window.innerWidth < 600) {
         shiftVectorInf = [-0.6, 0];
         zeroMobileShift = -0.05;
         espaceMobileShift = -8;
         arrowGapRight = 10;
         ratio_mobile = 0.7;
-        markerSize = 8*ratio_mobile;
+        markerSize = 8*ratio_mobile*ratio_mobile;
+                size_holy_spirit_arrow = 20;
+
     }
+
 
     const svgWidth = +svg.attr("width");
     const svgHeight = +svg.attr("height");
@@ -77,12 +80,12 @@ let constantLabelShift = 25*ratio_mobile ;
 
 
 const shiftOuterCircle = 30*ratio_mobile ;
-const shiftInnerCircle = 40*ratio_mobile ;
+const shiftInnerCircle = 20*ratio_mobile ;
 
 
 
 let radius = 20*ratio_mobile;
-let radius_zero = 15*ratio_mobile;
+let radius_zero = 15*ratio_mobile*ratio_mobile*ratio_mobile;
 
 const goldenRatio = (1 + Math.sqrt(5)) / 2*1;
 
@@ -174,7 +177,7 @@ function createArc(startPoint, endPoint, angleHeight, arrowGap = 0) {
     const [arrowX, arrowY] = axes.c2p(4, 0);
 
     // Create the arrow
-    createArrow(svg, arrowX, arrowY, 0, 40, "yellow");
+    createArrow(svg, arrowX, arrowY, 0, size_holy_spirit_arrow, "yellow");
 
     const xScale = d3.scaleLinear().domain([axes.xRange[0], axes.xRange[1]]).range([0, axes.width]);
     const yScale = d3.scaleLinear().domain([axes.yRange[0], axes.yRange[1]]).range([axes.height, 0]);
@@ -427,33 +430,47 @@ transitioningPlusToMinus
         };
     });
 
-
-
 // Create a moving short line to represent the arrowhead
 const arrowHeadPlusToMinus = svg.append("line")
     .attr("stroke", "white")
     .attr("stroke-width", 4)
     .attr("marker-end", "url(#arrow-plus-to-minus)")
-    .attr("opacity", 0);
+    .attr("opacity", 1);
+
+
+
 
 // Animate the short line along the path
 arrowHeadPlusToMinus.transition()
     .delay(delayTime)
     .duration(durationTime)
     .ease(d3.easeLinear)
-    .attrTween("transform", function() {
+    .attrTween("x1", function() {
         return function(t) {
-            const point = transitioningPlusToMinus.node().getPointAtLength(pathLengthPlusToMinus * t);
-            const nextPoint = transitioningPlusToMinus.node().getPointAtLength(pathLengthPlusToMinus * (t + 0.01));
-            const angle = Math.atan2(nextPoint.y - point.y, nextPoint.x - point.x) * 180 / Math.PI;
-            return `translate(${point.x},${point.y}) rotate(${angle})`;
+            const point = transitioningPlusToMinus.node().getPointAtLength(pathLengthPlusToMinus  * Math.min(t, 0.99));
+            return point.x;
         };
     })
-    .on("start", function() {
-        d3.select(this).attr("opacity", 1); // Show the arrowhead at the start
+    .attrTween("y1", function() {
+        return function(t) {
+            const point = transitioningPlusToMinus.node().getPointAtLength(pathLengthPlusToMinus * Math.min(t, 0.99));
+            return point.y;
+        };
+    })
+    .attrTween("x2", function() {
+        return function(t) {
+            const point = transitioningPlusToMinus.node().getPointAtLength(pathLengthPlusToMinus * Math.min(t + 0.01, 1));
+            return point.x;
+        };
+    })
+    .attrTween("y2", function() {
+        return function(t) {
+            const point = transitioningPlusToMinus.node().getPointAtLength(pathLengthPlusToMinus * Math.min(t + 0.01, 1));
+            return point.y;
+        };
     })
     .on("end", function() {
-        d3.select(this).attr("opacity", 0); // Hide the arrowhead at the end
+        //d3.select(this).attr("opacity", 0); // Hide the arrowhead at the end
         transitioningPlusToMinus
         .attr("marker-end", "url(#arrow-plus-to-minus)"); // Display the main path's stroke
     });
@@ -527,56 +544,42 @@ const arrowHeadMinusToPlus = svg.append("line")
     .attr("stroke", "white")
     .attr("stroke-width", 4)
     .attr("marker-end", "url(#arrow-minus-to-plus)")
-    .attr("opacity", 0);
+    .attr("opacity", 1);
 
 // Animate the short line along the path
 arrowHeadMinusToPlus.transition()
     .delay(delayTime)
     .duration(durationTime)
     .ease(d3.easeLinear)
-    .attrTween("transform", function() {
+    .attrTween("x1", function() {
         return function(t) {
-            const point = transitioningMinusToPlus.node().getPointAtLength(pathLengthMinusToPlus * t);
-            const nextPoint = transitioningMinusToPlus.node().getPointAtLength(pathLengthMinusToPlus * (t + 0.01));
-            const angle = Math.atan2(nextPoint.y - point.y, nextPoint.x - point.x) * 180 / Math.PI;
-            return `translate(${point.x},${point.y}) rotate(${angle})`;
+            const point = transitioningMinusToPlus.node().getPointAtLength(pathLengthMinusToPlus * Math.min(t, 0.99));
+            return point.x;
         };
     })
-    .on("start", function() {
-        d3.select(this).attr("opacity", 1); // Show the arrowhead at the start
+    .attrTween("y1", function() {
+        return function(t) {
+            const point = transitioningMinusToPlus.node().getPointAtLength(pathLengthMinusToPlus * Math.min(t, 0.99));
+            return point.y;
+        };
+    })
+    .attrTween("x2", function() {
+        return function(t) {
+            const point = transitioningMinusToPlus.node().getPointAtLength(pathLengthMinusToPlus * Math.min(t + 0.01, 1));
+            return point.x;
+        };
+    })
+    .attrTween("y2", function() {
+        return function(t) {
+            const point = transitioningMinusToPlus.node().getPointAtLength(pathLengthMinusToPlus * Math.min(t + 0.01, 1));
+            return point.y;
+        };
     })
     .on("end", function() {
-        d3.select(this).attr("opacity", 0); // Hide the arrowhead at the end
         transitioningMinusToPlus
         .attr("marker-end", "url(#arrow-minus-to-plus)"); // Display the main path's stroke
     });
 
-
-
-
-
-
-
-    /*
-// Animate the arrowhead
-arrowPath.attr("stroke-dasharray", pathLength + " " + pathLength)
-    .attr("stroke-dashoffset", pathLength)
-    .transition()
-    .delay(500)
-    .duration(2000)
-    .ease(d3.easeLinear)
-    .attrTween("stroke-dashoffset", function() {
-        return function(t) {
-            // We subtract a small value (0.001) to ensure the arrow is always at the tip
-            return pathLength * (1 - t + 0.001);
-        };
-    })
-    .on("end", function() {
-        // At the end of the animation, we can remove the arrow path
-        // and add the marker to the main path if desired
-        d3.select(this).remove();
-        transitioningMinusToPlus.attr("marker-end", "url(#arrow-minus-to-plus)");
-    });*/
 
 
 
@@ -693,7 +696,7 @@ function drawCircularPath(svg, centerPoint, startPoint, angle, radius, color = "
 
     
     // Draw a small line segment at the end to ensure the marker is visible and correctly oriented
-    const tangentLength = 10; // Adjust this value if needed
+    const tangentLength = 1; // Adjust this value if needed
     const tangentEndX = endXProper - tangentLength * Math.sin(endAngle  -  Math.PI/2);
     const tangentEndY = endYProper + tangentLength * Math.cos(endAngle -  Math.PI/2);
     
@@ -702,7 +705,7 @@ function drawCircularPath(svg, centerPoint, startPoint, angle, radius, color = "
         .attr("y1", endYProper)
         .attr("x2", tangentEndX)
         .attr("y2", tangentEndY)
-        .attr("stroke", "blue")
+        .attr("stroke", "black")
         .attr("stroke-width", 5)
         .attr("marker-end", `url(#${markerId})`);
 
@@ -740,72 +743,6 @@ function getCircularPathAnimated(svg, centerPoint, startPoint, angle, radius,t, 
 
 }
 
-/*
-function drawCircularPathAnimated(svg, centerPoint, startPoint, maxAngle, radius, color = "yellow", markerId = "arrow-plus-to-plus", duration = 2000) {
-    // Calculate initial angle
-    const startAngle = Math.atan2(startPoint[1] - centerPoint[1], startPoint[0] - centerPoint[0]) + Math.PI/2;
-    
-    // Create the arc generator
-    const arcGenerator = d3.arc()
-        .innerRadius(radius)
-        .outerRadius(radius)
-        .startAngle(startAngle);
-    
-    // Draw the initial path
-    const path = svg.append("path")
-        .attr("transform", `translate(${centerPoint[0]},${centerPoint[1]})`)
-        .attr("fill", "none")
-        .attr("stroke", color)
-        .attr("stroke-width", 2);
-
-    // Create a line for the arrow
-    const arrowLine = svg.append("line")
-        .attr("stroke", color)
-        .attr("stroke-width", 2)
-        .attr("marker-end", `url(#${markerId})`);
-
-    // Animate the path and arrow
-    d3.transition()
-        .duration(duration)
-        .ease(d3.easeLinear)
-        .tween("pathTween", function() {
-            return function(t) {
-                const currentAngle = t * maxAngle;
-                const angleRad = currentAngle * Math.PI / 180;
-                
-                // Update the arc
-                arcGenerator.endAngle(startAngle + angleRad);
-                path.attr("d", arcGenerator());
-
-                // Update the arrow position
-                const endAngle = startAngle + angleRad - Math.PI/2;
-                const endX = centerPoint[0] + radius * Math.cos(endAngle);
-                const endY = centerPoint[1] + radius * Math.sin(endAngle);
-                const tangentLength = 10;
-                const tangentEndX = endX - tangentLength * Math.sin(endAngle);
-                const tangentEndY = endY + tangentLength * Math.cos(endAngle);
-
-                arrowLine
-                    .attr("x1", endX)
-                    .attr("y1", endY)
-                    .attr("x2", tangentEndX)
-                    .attr("y2", tangentEndY);
-            };
-        });
-}
-*/
-
-/*
-
-    for (let x = 0; x <= Math.PI / 3.2; x += 0.01) {
-        setTimeout(() => {
-            const newPathLeft = d3.path();
-            let newPathPlusPlus = getCircularPathAnimated(svg, centerPointPlusPlus, disc_plus_right_position, angle, radius, "yellow", "arrow-plus-to-plus");
-            timexLeft.attr("d", newPathPlusPlus);
-        },  delayProductSplit + x * 1200);
-    }
-
-*/
 
 
 // Example usage
@@ -817,109 +754,12 @@ const centerPointPlusPlus = [disc_plus_right_position[0] + shiftOuterCircle, dis
 
 const centerPointMinusMinus= [disc_minus_left_position[0] - shiftOuterCircle, disc_minus_left_position[1]];
 
-const centerPointZeroZeroRight = [disc_zero_position[0] + shiftInnerCircle, disc_zero_position[1]];
+const centerPointZeroZeroRight = [disc_zero_position[0] + radius_zero + shiftInnerCircle, disc_zero_position[1]];
 
 
-const centerPointZeroZeroLeft = [disc_zero_position[0] - shiftInnerCircle, disc_zero_position[1]];
+const centerPointZeroZeroLeft = [disc_zero_position[0] - radius_zero -  shiftInnerCircle, disc_zero_position[1]];
 
 
-/*
-const pathZeroRight = svg.append("path")
-    .attr("fill", "none")
-    .attr("stroke", "yellow")
-    .attr("stroke-width", 2);
-
-const pathZeroLeft = svg.append("path")
-    .attr("fill", "none")
-    .attr("stroke", "yellow")
-    .attr("stroke-width", 2);
-
-
-const pathPlusPlus = svg.append("path")
-    .attr("fill", "none")
-    .attr("stroke", "yellow")
-    .attr("stroke-width", 2);
-
-const pathMinusMinus = svg.append("path")
-    .attr("fill", "none")
-    .attr("stroke", "yellow")
-    .attr("stroke-width", 2);
-
-const linePlusPlus = svg.append("line")
-    .attr("stroke", "blue")
-    .attr("stroke-width", 5)
-    .attr("marker-end", "url(#arrow-plus-to-plus)");
-
-const lineMinusMinus = svg.append("line")
-    .attr("stroke", "blue")
-    .attr("stroke-width", 5)
-    .attr("marker-end", "url(#arrow-minus-to-minus)");
-
-const lineZeroRight = svg.append("line")
-    .attr("stroke", "blue")
-    .attr("stroke-width", 5)
-    .attr("marker-end", "url(#arrow-zero-zero-right)");
-
-const lineZeroLeft = svg.append("line")
-    .attr("stroke", "blue")
-    .attr("stroke-width", 5)
-    .attr("marker-end", "url(#arrow-zero-zero-left)");
-
-// Animation loop
-const totalFrames = 100; // Adjust as needed
-for (let t = 0; t <= totalFrames; t++) {
-    const progress = t / totalFrames;
-
-    newAngle = 300*progress;
-
-    
-    // Update plus-plus circular path
-    const plusPlusArc = getCircularPathAnimated(svg, centerPointPlusPlus, disc_plus_right_position, newAngle, radius, "yellow", "arrow-plus-to-plus");
-    
-    pathPlusPlus.attr("d", plusPlusArc)
-        .attr("transform", `translate(${centerPointPlusPlus[0]},${centerPointPlusPlus[1]})`);
-    
-    // Update minus-minus circular path
-    const minusMinusArc = d3.arc()
-        .innerRadius(radius)
-        .outerRadius(radius)
-        .startAngle(0)
-        .endAngle(newAngle*Math.PI/180);
-    
-    pathMinusMinus.attr("d", minusMinusArc())
-        .attr("transform", `translate(${centerPointMinusMinus[0]},${centerPointMinusMinus[1]})`);
-    
-    // Update line endpoints for circular paths
-    const updateLineEndpoint = (centerPoint, startPoint, angle, radius) => {
-        const startAngle = Math.atan2(startPoint[1] - centerPoint[1], startPoint[0] - centerPoint[0]) + Math.PI/2;
-        const endAngle = startAngle + (angle * Math.PI / 180 * progress);
-        const endX = centerPoint[0] + radius * Math.cos(endAngle - Math.PI/2);
-        const endY = centerPoint[1] + radius * Math.sin(endAngle - Math.PI/2);
-        const tangentLength = 10;
-        const tangentEndX = endX - tangentLength * Math.sin(endAngle - Math.PI/2);
-        const tangentEndY = endY + tangentLength * Math.cos(endAngle - Math.PI/2);
-        return { x1: endX, y1: endY, x2: tangentEndX, y2: tangentEndY };
-    };
-    
-    // Update plus-plus line
-    const plusPlusEndpoint = updateLineEndpoint(centerPointPlusPlus, disc_plus_right_position, newAngle, radius);
-    linePlusPlus.transition().attr(plusPlusEndpoint);
-    
-    // Update minus-minus line
-    const minusMinusEndpoint = updateLineEndpoint(centerPointMinusMinus, disc_minus_left_position, newAngle, radius);
-    lineMinusMinus.attr(minusMinusEndpoint);
-
-
-    
-    // Update zero-right line
-    const zeroRightEndpoint = updateLineEndpoint(centerPointZeroZeroRight, disc_zero_position, newAngle, radius_zero);
-    lineZeroRight.attr(zeroRightEndpoint);
-    
-    // Update zero-left line
-    const zeroLeftEndpoint = updateLineEndpoint(centerPointZeroZeroLeft, disc_zero_position, newAngle, radius_zero);
-    lineZeroLeft.attr(zeroLeftEndpoint);
-}
-*/
 
 // Initialize paths and lines
 function initializePathsAndLines(svg) {
@@ -944,19 +784,19 @@ function initializePathsAndLines(svg) {
 
     const lines = {
         plusPlus: svg.append("line")
-            .attr("stroke", "blue")
+            .attr("stroke", "black")
             .attr("stroke-width", 5)
             .attr("marker-end", "url(#arrow-plus-to-plus)"),
         minusMinus: svg.append("line")
-            .attr("stroke", "blue")
+            .attr("stroke", "black")
             .attr("stroke-width", 5)
             .attr("marker-end", "url(#arrow-minus-to-minus)"),
         zeroRight: svg.append("line")
-            .attr("stroke", "blue")
+            .attr("stroke", "black")
             .attr("stroke-width", 5)
             .attr("marker-end", "url(#arrow-zero-zero-right)"),
         zeroLeft: svg.append("line")
-            .attr("stroke", "blue")
+            .attr("stroke", "black")
             .attr("stroke-width", 5)
             .attr("marker-end", "url(#arrow-zero-zero-left)")
     };
@@ -986,7 +826,7 @@ function updatePathsAndLines(svg, paths, lines, angle) {
         const endXProper = centerPoint[0] + radius * Math.cos(endAngle - Math.PI/2);
         const endYProper = centerPoint[1] + radius * Math.sin(endAngle - Math.PI/2);
 
-        const tangentLength = 10;
+        const tangentLength = 1;
         const tangentEndX = endXProper - tangentLength * Math.sin(endAngle - Math.PI/2);
         const tangentEndY = endYProper + tangentLength * Math.cos(endAngle - Math.PI/2);
 

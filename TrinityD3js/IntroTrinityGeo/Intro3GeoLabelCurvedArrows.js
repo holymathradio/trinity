@@ -129,7 +129,7 @@ setTimeout(() => setIsCanceled(false), 10);
         .attr("text-anchor", "middle")
         .style("opacity", 1)
         .text("1");
-
+/*
     svg.selectAll(".sign-holy-spirit")
             .attr("x", axes.c2p(4, 0)[0])
             .attr("y", axes.c2p(4, 0)[1] + 23) // Shift down by half of its height (22 is half of font size 44, but 11 works)
@@ -137,7 +137,31 @@ setTimeout(() => setIsCanceled(false), 10);
         .attr("fill", "yellow")
         .style("opacity", 1)
         .text(">");
+*/
 
+                    function createArrow(svg, x, y, angle, size, color) {
+    // Convert angle from degrees to radians
+    const rad = angle * Math.PI / 180;
+    
+    // Calculate end points of the two lines
+    const x1 = x + size * Math.cos(rad + 7*Math.PI / 8);
+    const y1 = y + size * Math.sin(rad + 7*Math.PI / 8);
+    const x2 = x + size * Math.cos(rad - 7*Math.PI / 8);
+    const y2 = y + size * Math.sin(rad - 7*Math.PI / 8);
+    
+    // Create the arrow using a path element
+    return svg.append("path")
+       .attr("d", `M${x1},${y1} L${x},${y} L${x2},${y2}`)
+       .attr("stroke", color)
+       .attr("stroke-width", 5)
+       .attr("fill", "none");
+}
+
+// Get the coordinates where you want to place the arrow
+const [arrowX, arrowY] = axes.c2p(4.4, 0);
+
+// Create the arrow
+createArrow(svg, arrowX, arrowY, 0, 40, "yellow");
 
     svg.selectAll(".sign-holy-spirit-label")
         .attr("x", axes.c2p(4 + shiftVectorInf[0], 0.4)[0])
