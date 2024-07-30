@@ -671,7 +671,7 @@ const labelSplitRight = svg.append("text")
     .text("e''")
     .style("opacity", 0);
 
-let r_product_left = -70 ;
+let r_product_left = -70*ratio_mobile ;
 
 const labelPositionCommutedLeftInitial = calculateLabelPosition(newPointsSplitCommutedProduct[0], newPointsSplit[2], r_product_left);
 const labelPositionCommutedLeftFinal = calculateLabelPosition(newPointsSplitCommutedProduct[0], newPointsSplitCommutedProduct[1], r_product_left);
