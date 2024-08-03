@@ -475,35 +475,7 @@ arrowHeadPlusToMinus.transition()
         .attr("marker-end", "url(#arrow-plus-to-minus)"); // Display the main path's stroke
     });
 
-/*
-// Append the initial path to the SVG
-const transitioningMinusToPlus = svg.append("path")
-    .attr("d", createArc(disc_minus_top_position, disc_plus_top_position,angle_right,arrowGap = arrowGapRight)) //parameters from previous scene
-    .attr("fill", "none")
-    .attr("stroke", "white")
-    .attr("stroke-width", 4)
-    .attr("marker-end", "url(#arrow-minus-to-plus)")
-    .style("opacity", 1); // Set initial opacity to 1
 
-
-
-    // Transition the path
-    transitioningMinusToPlus.transition()
-        .delay(delayTime)
-        .duration(durationTime)
-        .attrTween("d", function() {
-            return function(t) {
-
-                endpointArc = [
-                    d3.interpolate(disc_minus_top_position[0], disc_plus_top_position[0])(t),
-                    d3.interpolate(disc_minus_top_position[1], disc_plus_top_position[1])(t)
-                ];
-
-                return createArc(disc_minus_top_position, endpointArc,angle_right,arrowGap = arrowGapRight); // createArc(disc_minus_top_position, endpointArc,angle_right,arrowGap = arrowGapRight)
-            };
-        });
-
-*/
 // Assuming the marker definition is already in place as you've shown
 
 // Define the path

@@ -247,49 +247,6 @@ function createArc(startPoint, endPoint, angleHeight, arrowGap = 0) {
 }
 
 
-function calculateArcParametersFlat(startDrawPoint, endDrawPoint, flatnessFactor = 1) {
-    // Calculate the midpoint
-    const midX = (startDrawPoint[0] + endDrawPoint[0]) / 2;
-    const midY = (startDrawPoint[1] + endDrawPoint[1]) / 2;
-    
-    // Calculate the distance between points
-    const dx = endDrawPoint[0] - startDrawPoint[0];
-    const dy = endDrawPoint[1] - startDrawPoint[1];
-    const dist = Math.sqrt(dx * dx + dy * dy);
-    
-    // Calculate the radius, adjusted by flatnessFactor
-    const radius = (dist / (2 * Math.sin(Math.PI / 6))) * flatnessFactor;
-    
-    // Calculate the angle
-    const angle = Math.atan2(dy, dx);
-    
-    // Calculate initial control point, adjusted by flatnessFactor
-    const initialControlX = midX - (radius * Math.sin(angle) + 20) / flatnessFactor;
-    const initialControlY = midY + (radius * Math.cos(angle) - 23) / flatnessFactor;
-    
-    // Adjust control point using getControlPointAdjustment
-    const { adjustedControlX, adjustedControlY } = getControlPointAdjustment(
-        initialControlX,
-        initialControlY,
-        radius,
-        angle + Math.PI + Math.PI / 3,
-        startDrawPoint
-    );
-    
-    // Adjust the end angle based on flatnessFactor
-    const endAngleAdjustment = Math.PI / 3.3 / flatnessFactor;
-    
-    return {
-        adjustedControlX,
-        adjustedControlY,
-        radius,
-        startAngle: angle + Math.PI + Math.PI / 3,
-        endAngle: angle + Math.PI + Math.PI / 3 + endAngleAdjustment,
-        counterclockwise: false
-    };
-}
-
-
 function calculateLabelPosition(startDrawPoint, endDrawPoint, r) {
     // Calculate midpoint
     const midX = (startDrawPoint[0] + endDrawPoint[0]) / 2;

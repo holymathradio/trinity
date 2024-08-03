@@ -116,7 +116,7 @@ if (window.innerWidth < 600) {
 
     fatherDot.raise(); // Ensure father-dot stays on top
 
-
+// stroke 1 ever for small grids
  function createGrid(svg, axes, Ngrid = 10, NlargeGrid = 10, largeGridSpacing = 4) {
     const grid = svg.append("g").attr("class", "grid");
 

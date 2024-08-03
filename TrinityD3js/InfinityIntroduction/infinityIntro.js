@@ -681,7 +681,7 @@ const checkCancelLoop = setInterval(() => {
                 if (getIsCanceled && getIsCanceled()) {
                     clearTimeout(timeoutId);
                     clearTimeout(animationTimeoutId);
-                    clearTimeout(animationgridTimeoutId);
+                    //if (animationgridTimeoutId) {clearTimeout(animationgridTimeoutId);}
                     clearTimeout(animationTransformCircleTimeoutId);
                     clearTimeout(updateTextTimeoutId);
                     
