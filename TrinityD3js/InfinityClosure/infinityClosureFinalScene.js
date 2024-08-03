@@ -45,7 +45,7 @@ svg.attr("width", maxWidth)
 
 
     let fontSize = "36px"; // Set the font size for all labels
-
+    let fontSizeNumber = 36;
 
 
     let curlyParameter = 0.55;
@@ -56,11 +56,14 @@ svg.attr("width", maxWidth)
     let height_axes = 5;
     let shiftVectorInfRight = [0, 0];
     let fontSizeInfinity = 62;
+    let mobileRatio = 1;
 
         let brace_stroke_width = 4;
 if (window.innerWidth < 600) {
         brace_stroke_width = 3;
         fontSize = "24px";
+        fontSizeNumber = 24;
+        mobileRatio = 0.8;
     }
 
 if (window.innerWidth < 600) {
@@ -68,7 +71,7 @@ if (window.innerWidth < 600) {
         shiftVectorInf = [-0.6, 0];
         size_holy_spirit_arrow = 30;
         shiftVectorInfRight = [-0.3,0];
-        height_axes = 7 ;
+        //height_axes = 7 ;
         fontSizeInfinity = 50;
     }
 
@@ -114,8 +117,8 @@ if (window.innerWidth < 600) {
         var qx4 = (x1 - 0.75 * len * dx) + directionFactor * (1 - q) * w * dy;
         var qy4 = (y1 - 0.75 * len * dy) - directionFactor * (1 - q) * w * dx;
 
-            var smallUpwardPath = `l 0 ${directionFactor * 4}`; // add a longer tick in the middle of the bracket
-            var smallFeetDownwardPath = `l 0 ${-directionFactor * 3}`; // add a longer tick in the middle of the bracket
+            var smallUpwardPath = `l 0 ${directionFactor * 4*mobileRatio}`; // add a longer tick in the middle of the bracket
+            var smallFeetDownwardPath = `l 0 ${-directionFactor * 3 }`; // add a longer tick in the middle of the bracket
 
 
         return (
@@ -362,10 +365,9 @@ svg.append("text").attr("class", "sign-holy-spirit-final");
         .attr("y", startPoint_e[1] + shiftLabelPrinciple)  // Adjusted y-position for larger font
         .attr("text-anchor", "middle")
         .attr("fill", "gray")
-        .attr("font-size", fontSize*0.8)  // Set font size
+        .attr("font-size", `${fontSizeNumber*0.8}px`)  // Set font size
         .text("e , e'")
         .style("opacity",1);
-
 
 
 

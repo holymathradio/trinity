@@ -56,6 +56,8 @@ svg.attr("width", maxWidth)
     const totalDuration = delayShiftBack + durationShiftBack + 2000;
 
 
+    let mobileRatio = 1;
+
     let curlyParameter = 0.55;
 
     let shiftVectorInf = [-0.4, 0];
@@ -76,8 +78,9 @@ if (window.innerWidth < 600) {
         shiftVectorInf = [-0.6, 0];
         size_holy_spirit_arrow = 30;
         shiftVectorInfRight = [-0.3,0];
-        height_axes = 7 ;
+        //height_axes = 7 ;
         fontSizeInfinity = 50;
+        mobileRatio = 0.8;
     }
 
     const svgWidth = +svg.attr("width");
@@ -98,7 +101,8 @@ if (window.innerWidth < 600) {
 
 
 
-    // Function to create curly brace
+
+     // Function to create curly brace
     function makeCurlyBrace(x1, y1, x2, y2, w, q, isTop = false) {
         var dx = x1 - x2;
         var dy = y1 - y2;
@@ -119,8 +123,8 @@ if (window.innerWidth < 600) {
         var qx4 = (x1 - 0.75 * len * dx) + directionFactor * (1 - q) * w * dy;
         var qy4 = (y1 - 0.75 * len * dy) - directionFactor * (1 - q) * w * dx;
 
-            var smallUpwardPath = `l 0 ${directionFactor * 4}`; // add a longer tick in the middle of the bracket
-            var smallFeetDownwardPath = `l 0 ${-directionFactor * 3}`; // add a longer tick in the middle of the bracket
+            var smallUpwardPath = `l 0 ${directionFactor * 4*mobileRatio}`; // add a longer tick in the middle of the bracket
+            var smallFeetDownwardPath = `l 0 ${-directionFactor * 3 }`; // add a longer tick in the middle of the bracket
 
 
         return (

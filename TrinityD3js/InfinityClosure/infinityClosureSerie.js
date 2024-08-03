@@ -53,6 +53,7 @@ svg.attr("width", maxWidth)
 
     const totalDuration = delayAlign + durationAlign + 500;
 
+    let mobileRatio = 1;
 
     let curlyParameter = 0.55;
 
@@ -74,8 +75,9 @@ if (window.innerWidth < 600) {
         shiftVectorInf = [-0.6, 0];
         size_holy_spirit_arrow = 30;
         shiftVectorInfRight = [-0.3,0];
-        height_axes = 7 ;
+        //height_axes = 7 ;
         fontSizeInfinity = 50;
+        mobileRatio = 0.8;
     }
 
     const svgWidth = +svg.attr("width");
