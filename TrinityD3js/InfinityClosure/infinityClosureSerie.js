@@ -54,6 +54,7 @@ svg.attr("width", maxWidth)
     const totalDuration = delayAlign + durationAlign + 500;
 
     let mobileRatio = 1;
+    let mobileRatioLight = 1;
 
     let curlyParameter = 0.55;
 
@@ -77,8 +78,18 @@ if (window.innerWidth < 600) {
         shiftVectorInfRight = [-0.3,0];
         //height_axes = 7 ;
         fontSizeInfinity = 50;
-        mobileRatio = 0.8;
+        mobileRatio = 0.5;
+        mobileRatioLight = 0.85;
     }
+
+    // Define the heightRectangle variable
+    let heightRectangle = 20;
+
+    // Adjust heightRectangle for mobile if needed
+    if (window.innerWidth < 600) {
+        heightRectangle = 15; 
+    }
+
 
     const svgWidth = +svg.attr("width");
     const svgHeight = +svg.attr("height");
@@ -99,12 +110,13 @@ if (window.innerWidth < 600) {
 
 
     // Function to create curly brace
-    function makeCurlyBrace(x1, y1, x2, y2, w, q, isTop = false) {
+    function makeCurlyBrace(x1, y1, x2, y2, w, q, isTop = false,mobileRatio = 1) {
         var dx = x1 - x2;
         var dy = y1 - y2;
         var len = Math.sqrt(dx * dx + dy * dy);
         dx = dx / len;
         dy = dy / len;
+
 
         var directionFactor = isTop ? -1 : 1;
 
@@ -119,10 +131,12 @@ if (window.innerWidth < 600) {
         var qx4 = (x1 - 0.75 * len * dx) + directionFactor * (1 - q) * w * dy;
         var qy4 = (y1 - 0.75 * len * dy) - directionFactor * (1 - q) * w * dx;
 
-            var smallUpwardPath = `l 0 ${directionFactor * 4}`; // add a longer tick in the middle of the bracket
+
+            var smallUpwardPath = `l 0 ${directionFactor * 4 * mobileRatio}`; // add a longer tick in the middle of the bracket
             var smallFeetDownwardPath = `l 0 ${-directionFactor * 3}`; // add a longer tick in the middle of the bracket
-
-
+        if (mobileRatio < 1) {
+            smallUpwardPath = `l 0 ${directionFactor * 0}`;
+        }
         return (
             "M " + x1 + " " + y1 +
             smallFeetDownwardPath +
@@ -155,7 +169,7 @@ if (window.innerWidth < 600) {
 
     // Add the bottom brace (ex)
     const bottomBrace_e = svg.append("path")
-        .attr("d", makeCurlyBrace(startPoint_e[0], startPoint_e[1] + 20, endPoint_e[0], endPoint_e[1] + 20, 20, curlyParameter, isTop=false))
+        .attr("d", makeCurlyBrace(startPoint_e[0], startPoint_e[1] + 20, endPoint_e[0], endPoint_e[1] + 20, 20, curlyParameter, isTop=false,mobileRatio))
         .attr("fill", "none")
         .attr("stroke", "gray")
         .attr("stroke-width", brace_stroke_width);
@@ -166,7 +180,7 @@ if (window.innerWidth < 600) {
     const bottomBraceLabel_e = svg.append("text")
         .attr("class", "label-e-father")
         .attr("x", (startPoint_e[0] + endPoint_e[0]) / 2)
-        .attr("y", startPoint_e[1] + 70)  // Adjusted y-position for larger font
+        .attr("y", startPoint_e[1] + 70*mobileRatioLight)  // Adjusted y-position for larger font
         .attr("text-anchor", "middle")
         .attr("fill", "gray")
         .attr("font-size", fontSize)  // Set font size
@@ -176,7 +190,7 @@ if (window.innerWidth < 600) {
 
     // Add the bottom brace (ex)
     const bottomBrace_eprime = svg.append("path")
-        .attr("d", makeCurlyBrace(startPoint_eprime[0], startPoint_eprime[1] + 20, endPoint_eprime[0], endPoint_eprime[1] + 20, 20, curlyParameter, isTop=false))
+        .attr("d", makeCurlyBrace(startPoint_eprime[0], startPoint_eprime[1] + 20, endPoint_eprime[0], endPoint_eprime[1] + 20, 20, curlyParameter, isTop=false,mobileRatio))
         .attr("fill", "none")
         .attr("stroke", "gray")
         .attr("stroke-width", brace_stroke_width);
@@ -186,7 +200,7 @@ if (window.innerWidth < 600) {
     const bottomBraceLabel_eprime = svg.append("text")
         .attr("class", "label-e-father")
         .attr("x", (startPoint_eprime[0] + endPoint_eprime[0]) / 2)
-        .attr("y", startPoint_eprime[1] + 70)  // Adjusted y-position for larger font
+        .attr("y", startPoint_eprime[1] + 70*mobileRatioLight)  // Adjusted y-position for larger font
         .attr("text-anchor", "middle")
         .attr("fill", "gray")
         .attr("font-size", fontSize)  // Set font size
@@ -293,9 +307,9 @@ svg.append("text").attr("class", "sign-holy-spirit-final");
         .attr("x", axes.c2p(1 + 0.01, -0.00)[0])
         .attr("y", axes.c2p(1 + 0.01, -0.00)[1])
         .attr("width", 5)
-        .attr("height", 20)
+        .attr("height", heightRectangle)
         .attr("fill", "white")
-        .attr("transform", `translate(-5, -10)`);
+        .attr("transform", `translate(-5, ${-heightRectangle/2})`);
 
     // Add the rectangle
     const rectangle_eprime = svg.append("rect")
@@ -303,9 +317,9 @@ svg.append("text").attr("class", "sign-holy-spirit-final");
         .attr("x", axes.c2p(0.66 + 0.01, -0.00)[0])
         .attr("y", axes.c2p(0.66 + 0.01, -0.00)[1])
         .attr("width", 5)
-        .attr("height", 20)
+        .attr("height", heightRectangle)
         .attr("fill", "white")
-        .attr("transform", `translate(-5, -10)`);
+        .attr("transform", `translate(-5, ${-heightRectangle/2})`);
 
 
 
@@ -315,13 +329,13 @@ svg.append("text").attr("class", "sign-holy-spirit-final");
     bottomBrace_eprime.transition()
         .delay(delayShift)
         .duration(durationShift)
-        .attr("d", makeCurlyBrace(startPoint_eprime_shifted[0], startPoint_eprime_shifted[1] + 20, endPoint_eprime_shifted[0], endPoint_eprime_shifted[1] + 20, 20, curlyParameter, isTop=false));
+        .attr("d", makeCurlyBrace(startPoint_eprime_shifted[0], startPoint_eprime_shifted[1] + 20, endPoint_eprime_shifted[0], endPoint_eprime_shifted[1] + 20, 20, curlyParameter, isTop=false,mobileRatio));
 
     bottomBraceLabel_eprime.transition()
         .delay(delayShift)
         .duration(durationShift)
         .attr("x", (startPoint_eprime_shifted[0] + endPoint_eprime_shifted[0]) / 2)
-        .attr("y", startPoint_eprime_shifted[1] + 70);
+        .attr("y", startPoint_eprime_shifted[1] + 70*mobileRatioLight);
 
 
 
@@ -329,13 +343,13 @@ svg.append("text").attr("class", "sign-holy-spirit-final");
     bottomBrace_eprime.transition()
         .delay(delayAlign)
         .duration(durationAlign)
-        .attr("d", makeCurlyBrace(startPoint_eprime_aligned[0], startPoint_eprime_aligned[1] + 20, endPoint_eprime_aligned[0], endPoint_eprime_aligned[1] + 20, 20, curlyParameter, isTop=false));
+        .attr("d", makeCurlyBrace(startPoint_eprime_aligned[0], startPoint_eprime_aligned[1] + 20, endPoint_eprime_aligned[0], endPoint_eprime_aligned[1] + 20, 20, curlyParameter, isTop=false,mobileRatio));
 
     bottomBraceLabel_eprime.transition()
         .delay(delayAlign)
         .duration(durationAlign)
         .attr("x", (startPoint_eprime_aligned[0] + endPoint_eprime_aligned[0]) / 2)
-        .attr("y", startPoint_eprime_aligned[1] + 70);
+        .attr("y", startPoint_eprime_aligned[1] + 70*mobileRatioLight);
 
 
 
